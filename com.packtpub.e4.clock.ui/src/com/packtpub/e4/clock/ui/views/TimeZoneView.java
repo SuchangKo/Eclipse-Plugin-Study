@@ -13,7 +13,9 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.part.ViewPart;
 
@@ -31,10 +33,16 @@ public class TimeZoneView extends ViewPart {
 			Entry<String, Set<TimeZone>> region = regionIterator.next();
 			CTabItem item = new CTabItem(tabs, SWT.NONE);
 			item.setText(region.getKey()); // from before
-			ScrolledComposite scrolled = new ScrolledComposite(tabs,SWT.H_SCROLL | SWT.V_SCROLL);			
-		    Composite clocks = new Composite(scrolled, SWT.NONE);
-		    item.setControl(scrolled);
-		    scrolled.setContent(clocks);
+
+			// Composite clocks = new Composite(tabs, SWT.NONE);
+			// item.setControl(clocks);
+			ScrolledComposite scrolled = new ScrolledComposite(tabs, SWT.H_SCROLL | SWT.V_SCROLL);
+			Composite clocks = new Composite(scrolled, SWT.NONE);
+			clocks.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+			item.setControl(scrolled);
+			scrolled.setContent(clocks);
+
+			clocks.setLayout(new RowLayout());
 			RGB rgb = new RGB(128, 128, 128);
 			TimeZone td = TimeZone.getDefault();
 			Iterator<TimeZone> timezoneIterator = region.getValue().iterator();
@@ -46,11 +54,11 @@ public class TimeZoneView extends ViewPart {
 				ClockWidget clock = new ClockWidget(group, SWT.NONE, rgb);
 				clock.setOffset((tz.getOffset(System.currentTimeMillis()) - td.getOffset(System.currentTimeMillis()))
 						/ 3600000);
-				Point size = clocks.computeSize(SWT.DEFAULT,SWT.DEFAULT);
-			    scrolled.setMinSize(size);
-			    scrolled.setExpandHorizontal(true);
-			    scrolled.setExpandVertical(true);
 			}
+			Point size = clocks.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			scrolled.setMinSize(size);
+			scrolled.setExpandHorizontal(true);
+			scrolled.setExpandVertical(true);
 		}
 		tabs.setSelection(0);
 	}

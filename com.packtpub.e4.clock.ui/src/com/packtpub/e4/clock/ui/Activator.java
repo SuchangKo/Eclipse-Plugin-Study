@@ -58,7 +58,7 @@ public class Activator extends AbstractUIPlugin {
 					trayItem.setVisible(true);
 					trayItem.setText("Hello World");
 					trayItem.setImage(
-							new Image(trayItem.getDisplay(), Activator.class.getResourceAsStream("/icons/sample.gif")));
+							new Image(trayItem.getDisplay(), Activator.class.getResourceAsStream("/icons/sample.png")));
 					trayItem.addSelectionListener(new SelectionListener() {
 
 						@Override
